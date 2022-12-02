@@ -37,15 +37,58 @@
 # p my_min(list) 
 
 
-def largest_contiguous_subsum(list) #O(n^2)
-    subs = []
-    (0...list.length).each do |start|
-        (start...list.length).each do |ending|
-            subs << list[start..ending]
+#Phase1
+# def largest_contiguous_subsum(list) #O(n^2)
+#     subs = []
+#     (0...list.length).each do |start|
+#         (start...list.length).each do |ending|
+#             subs << list[start..ending]
+#         end
+#     end
+#     subs.map { |sub| sub.sum}.max
+# end
+
+# list = [5, 3, -7]
+# p largest_contiguous_subsum(list) # => 8
+
+
+#Phase 2
+# require "byebug"
+# debugger
+def largest_contiguous_subsum(list) #O(n)time with O(1)memory
+    largest_sum = false
+    current_sum = false
+
+    list.each do |ele|     
+        if largest_sum == false
+            current_sum = ele   
+            largest_sum = ele      
+        else 
+            next_sum = current_sum + ele 
+            if next_sum > largest_sum 
+                largest_sum = next_sum  
+                current_sum = next_sum  
+            elsif next_sum < largest_sum && next_sum >= 0
+                current_sum = next_sum
+            elsif next_sum < 0
+                current_sum = 0
+            end
         end
     end
-    subs.map { |sub| sub.sum}.max
+    largest_sum
 end
 
-list = [5, 3, -7]
-p largest_contiguous_subsum(list) # => 8
+
+list = [5, 3, -9, 5, 8]
+p largest_contiguous_subsum(list) # => 13
+
+
+
+
+
+
+
+
+
+# list = [2, 3, -6, 7, -6, 7]
+# p largest_contiguous_subsum(list) # => 8 (from [7, -6, 7])
